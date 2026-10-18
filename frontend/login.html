@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Log in to your LearnLoop account." />
+    <title>Log in — LearnLoop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/auth.css" />
+  </head>
+  <body class="auth-body" data-auth-page="login">
+    <main class="auth-layout">
+      <section class="auth-art">
+        <a class="brand brand-light" href="/index.html" aria-label="LearnLoop home">
+          <svg class="brand-mark" viewBox="0 0 36 36" aria-hidden="true">
+            <path d="M18 4.5c7.46 0 13.5 6.04 13.5 13.5S25.46 31.5 18 31.5 4.5 25.46 4.5 18 10.54 4.5 18 4.5Z" />
+            <path d="M11.5 18c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5" />
+          </svg>
+          <span>LearnLoop</span>
+        </a>
+
+        <div class="auth-art-copy">
+          <p class="eyebrow eyebrow-light">Keep the loop going</p>
+          <h1>Good work deserves a place to continue.</h1>
+          <p class="auth-art-lede">
+            Come back to your lessons, see what you finished, and take the next
+            small step. That is how progress becomes a habit.
+          </p>
+
+          <ul class="auth-points">
+            <li><span>✓</span> Pick up exactly where you left off</li>
+            <li><span>✓</span> Track every completed lesson</li>
+            <li><span>✓</span> Learn on your own schedule</li>
+          </ul>
+
+          <figure class="auth-quote">
+            <blockquote>
+              “The dashboard made it easy to come back after a busy week. I could
+              see that I was closer than I thought.”
+            </blockquote>
+            <figcaption>
+              <span class="avatar avatar-2">JR</span>
+              <span>Jordan R. · Career switcher</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <p class="auth-art-footer">Practical courses. Clear progress. No noise.</p>
+      </section>
+
+      <section class="auth-form-side">
+        <div class="auth-panel">
+          <a class="auth-mobile-brand brand" href="/index.html" aria-label="LearnLoop home">
+            <svg class="brand-mark" viewBox="0 0 36 36" aria-hidden="true">
+              <path d="M18 4.5c7.46 0 13.5 6.04 13.5 13.5S25.46 31.5 18 31.5 4.5 25.46 4.5 18 10.54 4.5 18 4.5Z" />
+              <path d="M11.5 18c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5" />
+            </svg>
+            <span>LearnLoop</span>
+          </a>
+
+          <div class="auth-heading">
+            <p class="eyebrow">Welcome back</p>
+            <h2>Pick up where you left off.</h2>
+            <p>Log in to open your dashboard and continue learning.</p>
+          </div>
+
+          <div class="demo-box">
+            <div>
+              <strong>Just exploring?</strong>
+              <span>Use a demo account to look around.</span>
+            </div>
+            <div class="demo-actions">
+              <button class="demo-button" type="button" data-demo="student">Student</button>
+              <button class="demo-button" type="button" data-demo="instructor">Instructor</button>
+            </div>
+          </div>
+
+          <form class="auth-form" data-auth-form novalidate>
+            <div class="field">
+              <label for="login-email">Email address</label>
+              <input
+                id="login-email"
+                name="email"
+                type="email"
+                inputmode="email"
+                autocomplete="email"
+                placeholder="you@example.com"
+                required
+              />
+              <p class="field-error" data-error-for="email"></p>
+            </div>
+
+            <div class="field">
+              <label for="login-password">Password</label>
+              <div class="password-wrap">
+                <input
+                  id="login-password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="Your password"
+                  required
+                />
+                <button
+                  class="password-toggle"
+                  type="button"
+                  data-toggle-password="login-password"
+                  aria-label="Show password"
+                >
+                  Show
+                </button>
+              </div>
+              <p class="field-error" data-error-for="password"></p>
+            </div>
+
+            <div class="form-error" data-form-error hidden></div>
+
+            <button class="button button-primary button-full auth-submit" type="submit">
+              Log in
+            </button>
+          </form>
+
+          <p class="auth-switch">
+            New to LearnLoop? <a href="/register.html">Create an account</a>
+          </p>
+
+          <p class="auth-legal">
+            By continuing, you agree to keep learning at your own pace.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast-stack" data-toast-stack aria-live="polite"></div>
+    <script type="module" src="/js/auth.js"></script>
+  </body>
+</html>

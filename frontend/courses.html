@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Browse LearnLoop courses in JavaScript, backend development, design, and career skills."
+    />
+    <title>Courses — LearnLoop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/courses.css" />
+  </head>
+  <body data-page="courses">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" data-header>
+      <div class="container nav">
+        <a class="brand" href="/index.html" aria-label="LearnLoop home">
+          <svg class="brand-mark" viewBox="0 0 36 36" aria-hidden="true">
+            <path d="M18 4.5c7.46 0 13.5 6.04 13.5 13.5S25.46 31.5 18 31.5 4.5 25.46 4.5 18 10.54 4.5 18 4.5Z" />
+            <path d="M11.5 18c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5" />
+          </svg>
+          <span>LearnLoop</span>
+        </a>
+
+        <button
+          class="menu-toggle"
+          type="button"
+          data-menu-toggle
+          aria-label="Open navigation"
+          aria-expanded="false"
+          aria-controls="site-navigation"
+        >
+          <span></span><span></span>
+        </button>
+
+        <nav class="nav-links" id="site-navigation" data-nav aria-label="Main navigation">
+          <a href="/courses.html">Courses</a>
+          <a href="/index.html#how">How it works</a>
+          <a href="/index.html#instructors">For instructors</a>
+          <a href="/studio.html" data-studio-link hidden>Studio</a>
+        </nav>
+
+        <div class="nav-actions" data-nav-actions>
+          <a class="button button-ghost button-sm nav-login" href="/login.html">Log in</a>
+          <a class="button button-primary button-sm" href="/register.html">Get started</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="catalog-hero">
+        <div class="container catalog-hero-grid">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-dot"></span> The course catalog</p>
+            <h1>Find your next <em>small win.</em></h1>
+            <p class="catalog-hero-lede">
+              Practical, focused courses for people who learn by building. Pick a
+              topic, finish a lesson, and keep the loop going.
+            </p>
+          </div>
+          <div class="catalog-hero-note">
+            <span class="catalog-spark">✳</span>
+            <p>
+              Every course is built around short lessons and a clear outcome — not a
+              forty-hour video archive.
+            </p>
+            <span class="mono">Learn at your pace</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section catalog-section">
+        <div class="container">
+          <div class="filter-bar">
+            <form class="course-search" data-search-form role="search">
+              <label class="sr-only" for="course-search">Search courses</label>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m20 20-4.2-4.2"></path>
+              </svg>
+              <input
+                id="course-search"
+                name="search"
+                type="search"
+                placeholder="Search courses, topics, or skills…"
+                autocomplete="off"
+                data-search-input
+              />
+              <button class="button button-primary button-sm" type="submit">Search</button>
+            </form>
+
+            <div class="level-filter">
+              <label for="level-filter">Level</label>
+              <select id="level-filter" data-level-filter>
+                <option value="">All levels</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+              </select>
+            </div>
+          </div>
+
+          <div
+            class="category-row"
+            role="group"
+            data-category-filters
+            aria-label="Course categories"
+          >
+            <button class="category-chip is-active" type="button" data-category="">All courses</button>
+            <button class="category-chip" type="button" data-category="JavaScript">JavaScript</button>
+            <button class="category-chip" type="button" data-category="Web Development">Web Development</button>
+            <button class="category-chip" type="button" data-category="Backend">Backend</button>
+            <button class="category-chip" type="button" data-category="Design">Design</button>
+            <button class="category-chip" type="button" data-category="Data">Data</button>
+            <button class="category-chip" type="button" data-category="Career">Career</button>
+          </div>
+
+          <div class="catalog-meta">
+            <p data-results-count aria-live="polite">Loading courses…</p>
+            <button class="text-button" type="button" data-clear-filters hidden>
+              Clear filters
+            </button>
+          </div>
+
+          <div class="course-grid catalog-grid" data-course-grid aria-busy="true">
+            <article class="course-card skeleton-card" aria-hidden="true"></article>
+            <article class="course-card skeleton-card" aria-hidden="true"></article>
+            <article class="course-card skeleton-card" aria-hidden="true"></article>
+            <article class="course-card skeleton-card" aria-hidden="true"></article>
+            <article class="course-card skeleton-card" aria-hidden="true"></article>
+            <article class="course-card skeleton-card" aria-hidden="true"></article>
+          </div>
+
+          <div class="catalog-empty" data-catalog-empty hidden>
+            <span class="catalog-empty-mark">↻</span>
+            <h2>No courses match that loop yet.</h2>
+            <p data-catalog-empty-copy>
+              Try a different search or clear the filters to see the full catalog.
+            </p>
+            <button class="button button-primary" type="button" data-clear-filters>
+              Show all courses
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="catalog-cta">
+        <div class="container catalog-cta-inner">
+          <div>
+            <p class="eyebrow">Not sure where to start?</p>
+            <h2>Tell us what you want to build.</h2>
+          </div>
+          <div class="catalog-cta-actions">
+            <a class="button button-primary" href="/register.html">Create a free account</a>
+            <a class="button button-secondary" href="/index.html#how">How LearnLoop works</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a class="brand brand-light" href="/index.html">
+            <svg class="brand-mark" viewBox="0 0 36 36" aria-hidden="true">
+              <path d="M18 4.5c7.46 0 13.5 6.04 13.5 13.5S25.46 31.5 18 31.5 4.5 25.46 4.5 18 10.54 4.5 18 4.5Z" />
+              <path d="M11.5 18c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5" />
+            </svg>
+            <span>LearnLoop</span>
+          </a>
+          <p>Learn deeply. Build boldly. Keep the loop going.</p>
+        </div>
+        <div class="footer-col">
+          <h3>Learn</h3>
+          <a href="/courses.html">All courses</a>
+          <a href="/courses.html?category=JavaScript">JavaScript</a>
+          <a href="/courses.html?category=Backend">Backend</a>
+          <a href="/courses.html?category=Design">Design</a>
+        </div>
+        <div class="footer-col">
+          <h3>Platform</h3>
+          <a href="/dashboard.html">Dashboard</a>
+          <a href="/studio.html">Instructor studio</a>
+          <a href="/login.html">Log in</a>
+          <a href="/register.html">Create account</a>
+        </div>
+        <div class="footer-col footer-col-note">
+          <h3>Keep learning</h3>
+          <p class="footer-small">One useful email a month. No noise.</p>
+          <form class="footer-form" data-newsletter-form>
+            <label class="sr-only" for="newsletter-email-courses">Email address</label>
+            <input
+              id="newsletter-email-courses"
+              name="email"
+              type="email"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            />
+            <button class="button button-light button-sm" type="submit">Join</button>
+          </form>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p>© <span data-year></span> LearnLoop. Built as a student project.</p>
+        <p>HTML · CSS · JavaScript · Express · MongoDB</p>
+      </div>
+    </footer>
+
+    <div class="toast-stack" data-toast-stack aria-live="polite"></div>
+    <script type="module" src="/js/main.js"></script>
+    <script type="module" src="/js/courses.js"></script>
+  </body>
+</html>

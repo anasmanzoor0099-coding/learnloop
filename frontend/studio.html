@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="LearnLoop instructor studio: create courses, add lessons, and publish your teaching."
+    />
+    <title>Instructor Studio — LearnLoop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/studio.css" />
+  </head>
+  <body data-page="studio">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" data-header>
+      <div class="container nav">
+        <a class="brand" href="/index.html" aria-label="LearnLoop home">
+          <svg class="brand-mark" viewBox="0 0 36 36" aria-hidden="true">
+            <path d="M18 4.5c7.46 0 13.5 6.04 13.5 13.5S25.46 31.5 18 31.5 4.5 25.46 4.5 18 10.54 4.5 18 4.5Z" />
+            <path d="M11.5 18c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5" />
+          </svg>
+          <span>LearnLoop</span>
+        </a>
+
+        <button
+          class="menu-toggle"
+          type="button"
+          data-menu-toggle
+          aria-label="Open navigation"
+          aria-expanded="false"
+          aria-controls="site-navigation"
+        >
+          <span></span><span></span>
+        </button>
+
+        <nav class="nav-links" id="site-navigation" data-nav aria-label="Main navigation">
+          <a href="/courses.html">Courses</a>
+          <a href="/dashboard.html">Dashboard</a>
+          <a href="/index.html#how">How it works</a>
+          <a href="/studio.html" data-studio-link hidden>Studio</a>
+        </nav>
+
+        <div class="nav-actions" data-nav-actions>
+          <a class="button button-ghost button-sm nav-login" href="/login.html">Log in</a>
+          <a class="button button-primary button-sm" href="/register.html">Get started</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="studio-hero">
+        <div class="container studio-hero-grid">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-dot"></span> Instructor studio</p>
+            <h1>Build a course.<br /><em>Teach the craft.</em></h1>
+            <p class="studio-hero-lede">
+              Turn what you know into a clear path. Create a draft, add lessons,
+              preview the learner experience, and publish when it is ready.
+            </p>
+          </div>
+          <div class="studio-hero-actions">
+            <button class="button button-primary" type="button" data-new-course>
+              New course
+            </button>
+            <a class="button button-secondary" href="/courses.html">View catalog</a>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="studio-stats" role="group" aria-label="Studio statistics">
+            <div><strong data-studio-stat-courses>—</strong><span>courses</span></div>
+            <div><strong data-studio-stat-published>—</strong><span>published</span></div>
+            <div><strong data-studio-stat-lessons>—</strong><span>lessons</span></div>
+            <div><strong data-studio-stat-students>—</strong><span>students</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="studio-section">
+        <div class="container">
+          <div class="studio-loading" data-studio-loading aria-live="polite">
+            <div class="studio-loading-line"></div>
+            <div class="studio-loading-card"></div>
+          </div>
+
+          <div class="studio-denied" data-studio-denied hidden>
+            <span class="studio-denied-mark">↻</span>
+            <p class="eyebrow">Instructor access required</p>
+            <h2>Your studio is on the teaching side.</h2>
+            <p>
+              This area is for instructor accounts. If you are a student, head back
+              to your dashboard to continue learning.
+            </p>
+            <div class="studio-denied-actions">
+              <a class="button button-primary" href="/dashboard.html">Go to dashboard</a>
+              <a class="button button-secondary" href="/courses.html">Browse courses</a>
+            </div>
+          </div>
+
+          <div class="studio-content" data-studio-content hidden>
+            <div class="studio-layout">
+              <div class="studio-main">
+                <div class="studio-heading">
+                  <div>
+                    <p class="eyebrow">Your work</p>
+                    <h2>Courses</h2>
+                  </div>
+                  <span class="studio-count" data-studio-count></span>
+                </div>
+
+                <div class="studio-course-list" data-studio-courses>
+                  <div class="studio-course-skeleton"></div>
+                  <div class="studio-course-skeleton"></div>
+                </div>
+
+                <div class="studio-empty" data-studio-empty hidden>
+                  <span class="studio-empty-mark">＋</span>
+                  <h3>Your first course starts here.</h3>
+                  <p>Create a draft, add a lesson, and publish when you are ready.</p>
+                  <button class="button button-primary" type="button" data-new-course>
+                    Create a course
+                  </button>
+                </div>
+              </div>
+
+              <aside class="studio-side">
+                <div class="studio-panel" data-create-panel>
+                  <div class="studio-panel-head">
+                    <span class="mono">New course</span>
+                    <h2>Create a draft</h2>
+                    <p>You can add lessons and publish after the basics are in place.</p>
+                  </div>
+
+                  <form class="studio-form" data-course-form novalidate>
+                    <div class="studio-field">
+                      <label for="course-title">Course title</label>
+                      <input
+                        id="course-title"
+                        name="title"
+                        type="text"
+                        maxlength="120"
+                        placeholder="e.g. Practical CSS Grid"
+                        required
+                      />
+                    </div>
+
+                    <div class="studio-field">
+                      <label for="course-tagline">Short tagline</label>
+                      <input
+                        id="course-tagline"
+                        name="tagline"
+                        type="text"
+                        maxlength="180"
+                        placeholder="One clear sentence about the outcome."
+                        required
+                      />
+                    </div>
+
+                    <div class="studio-field">
+                      <label for="course-description">Description</label>
+                      <textarea
+                        id="course-description"
+                        name="description"
+                        rows="4"
+                        maxlength="2000"
+                        placeholder="What will learners be able to do?"
+                        required
+                      ></textarea>
+                    </div>
+
+                    <div class="studio-form-row">
+                      <div class="studio-field">
+                        <label for="course-category">Category</label>
+                        <select id="course-category" name="category" required>
+                          <option value="">Choose…</option>
+                          <option value="JavaScript">JavaScript</option>
+                          <option value="Web Development">Web Development</option>
+                          <option value="Backend">Backend</option>
+                          <option value="Design">Design</option>
+                          <option value="Data">Data</option>
+                          <option value="Career">Career</option>
+                        </select>
+                      </div>
+                      <div class="studio-field">
+                        <label for="course-level">Level</label>
+                        <select id="course-level" name="level" required>
+                          <option value="">Choose…</option>
+                          <option value="Beginner">Beginner</option>
+                          <option value="Intermediate">Intermediate</option>
+                          <option value="Advanced">Advanced</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="studio-field">
+                      <label for="course-accent">Cover colour</label>
+                      <select id="course-accent" name="accent">
+                        <option value="mint">Mint</option>
+                        <option value="sun">Sun</option>
+                        <option value="sky">Sky</option>
+                        <option value="rose">Rose</option>
+                        <option value="violet">Violet</option>
+                        <option value="sand">Sand</option>
+                      </select>
+                    </div>
+
+                    <div class="studio-field">
+                      <label for="course-outcomes">Learning outcomes</label>
+                      <textarea
+                        id="course-outcomes"
+                        name="outcomes"
+                        rows="3"
+                        placeholder="One outcome per line"
+                      ></textarea>
+                    </div>
+
+                    <div class="studio-field">
+                      <label for="course-requirements">Requirements</label>
+                      <textarea
+                        id="course-requirements"
+                        name="requirements"
+                        rows="2"
+                        placeholder="One requirement per line"
+                      ></textarea>
+                    </div>
+
+                    <div class="studio-form-error" data-course-form-error hidden></div>
+                    <button class="button button-primary button-full" type="submit">
+                      Create draft course
+                    </button>
+                  </form>
+                </div>
+
+                <div class="studio-panel" data-manage-panel hidden>
+                  <div class="studio-panel-head studio-manage-head">
+                    <div>
+                      <span class="mono">Managing course</span>
+                      <h2 data-manage-title>Course</h2>
+                    </div>
+                    <span class="pill" data-manage-status>Draft</span>
+                  </div>
+
+                  <div class="manage-stats">
+                    <div><strong data-manage-lessons>0</strong><span>lessons</span></div>
+                    <div><strong data-manage-students>0</strong><span>students</span></div>
+                    <div><strong data-manage-minutes>0m</strong><span>content</span></div>
+                  </div>
+
+                  <div class="manage-actions">
+                    <button class="button button-secondary button-sm" type="button" data-toggle-publish>
+                      Publish
+                    </button>
+                    <a class="button button-ghost button-sm" href="/courses.html" data-preview-course>
+                      Preview
+                    </a>
+                    <button class="button button-ghost button-sm studio-danger" type="button" data-delete-course>
+                      Delete
+                    </button>
+                  </div>
+
+                  <div class="manage-divider"></div>
+
+                  <div class="studio-panel-head">
+                    <span class="mono">Add a lesson</span>
+                    <h3>One clear idea at a time</h3>
+                  </div>
+
+                  <form class="studio-form studio-lesson-form" data-lesson-form novalidate>
+                    <div class="studio-field">
+                      <label for="lesson-title">Lesson title</label>
+                      <input
+                        id="lesson-title"
+                        name="title"
+                        type="text"
+                        maxlength="120"
+                        placeholder="e.g. Grid areas in practice"
+                        required
+                      />
+                    </div>
+
+                    <div class="studio-form-row">
+                      <div class="studio-field">
+                        <label for="lesson-duration">Minutes</label>
+                        <input
+                          id="lesson-duration"
+                          name="duration"
+                          type="number"
+                          min="1"
+                          max="240"
+                          value="10"
+                          required
+                        />
+                      </div>
+                      <div class="studio-field">
+                        <label for="lesson-summary">Short summary</label>
+                        <input
+                          id="lesson-summary"
+                          name="summary"
+                          type="text"
+                          maxlength="240"
+                          placeholder="What is this lesson about?"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="studio-field">
+                      <label for="lesson-content">Lesson content</label>
+                      <textarea
+                        id="lesson-content"
+                        name="content"
+                        rows="5"
+                        placeholder="Write the lesson. Separate paragraphs with a blank line."
+                        required
+                      ></textarea>
+                    </div>
+
+                    <div class="studio-form-error" data-lesson-form-error hidden></div>
+                    <button class="button button-primary button-full" type="submit">
+                      Add lesson
+                    </button>
+                  </form>
+
+                  <div class="manage-divider"></div>
+
+                  <div class="studio-panel-head">
+                    <span class="mono">Curriculum</span>
+                    <h3>Lessons</h3>
+                  </div>
+                  <div class="studio-lesson-list" data-studio-lessons></div>
+                </div>
+              </aside>
+            </div>
+          </div>
+
+          <div class="studio-error" data-studio-error hidden></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="studio-footer">
+      <div class="container studio-footer-inner">
+        <p>© <span data-year></span> LearnLoop Studio. Built as a student project.</p>
+        <a class="text-link" href="/index.html">Back to LearnLoop</a>
+      </div>
+    </footer>
+
+    <div class="toast-stack" data-toast-stack aria-live="polite"></div>
+    <script type="module" src="/js/main.js"></script>
+    <script type="module" src="/js/studio.js"></script>
+  </body>
+</html>
