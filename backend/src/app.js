@@ -69,6 +69,8 @@ app.get('/api/health', (_req, res) => {
 
 app.use('/api/auth/login', authLimiter);
 app.use('/api/auth/register', authLimiter);
+app.use('/api/auth/send-otp', authLimiter);
+app.use('/api/auth/verify-otp', authLimiter);
 app.use('/api', optionalAuth);
 
 app.use('/api/auth', authRoutes);

@@ -5,9 +5,13 @@ import { ApiError } from '../lib/api-error.js';
 
 export const AUTH_COOKIE = 'learnloop_token';
 export const INSTRUCTOR_ACCESS_COOKIE = 'learnloop_instructor_access';
+export const REGISTER_COOKIE = 'learnloop_register';
+export const RESET_COOKIE = 'learnloop_reset';
 
 const MAX_AGE = 7 * 24 * 60 * 60 * 1000;
 const INSTRUCTOR_ACCESS_MAX_AGE = 8 * 60 * 60 * 1000;
+const REGISTER_MAX_AGE = 15 * 60 * 1000;
+const RESET_MAX_AGE = 10 * 60 * 1000;
 
 function getSecret() {
   const secret = process.env.JWT_SECRET;
@@ -37,7 +41,11 @@ function getInstructorCode() {
 
 export function signToken(user) {
   return jwt.sign(
-    { sub: user._id.toString(), role: user.role },
+    {
+      sub: user._id.toString(),
+      role: user.role,
+      ver: user.tokenVersion || 0
+    },
     getSecret(),
     { expiresIn: '7d' }
   );
@@ -55,6 +63,20 @@ const instructorCookieOptions = {
   secure: process.env.NODE_ENV === 'production',
   sameSite: 'lax',
   path: '/api/instructor'
+};
+
+const registerCookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax',
+  path: '/api/auth/register'
+};
+
+const resetCookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax',
+  path: '/api/auth/password'
 };
 
 export function setAuthCookie(res, token) {
@@ -87,6 +109,55 @@ export function clearInstructorAccessCookie(res) {
   res.clearCookie(INSTRUCTOR_ACCESS_COOKIE, instructorCookieOptions);
 }
 
+export function signRegistration(email, name) {
+  return jwt.sign(
+    { sub: email, name, scope: 'register' },
+    getSecret(),
+    { expiresIn: '15m' }
+  );
+}
+
+export function setRegistrationCookie(res, token) {
+  res.cookie(REGISTER_COOKIE, token, {
+    ...registerCookieOptions,
+    maxAge: REGISTER_MAX_AGE
+  });
+}
+
+export function clearRegistrationCookie(res) {
+  res.clearCookie(REGISTER_COOKIE, registerCookieOptions);
+}
+
+export function signPasswordReset(email) {
+  return jwt.sign(
+    { sub: email, scope: 'password-reset' },
+    getSecret(),
+    { expiresIn: '10m' }
+  );
+}
+
+export function setResetCookie(res, token) {
+  res.cookie(RESET_COOKIE, token, {
+    ...resetCookieOptions,
+    maxAge: RESET_MAX_AGE
+  });
+}
+
+export function clearResetCookie(res) {
+  res.clearCookie(RESET_COOKIE, resetCookieOptions);
+}
+
+export function verifyScopedToken(token, scope) {
+  if (!token) return null;
+
+  try {
+    const payload = jwt.verify(token, getSecret());
+    return payload.scope === scope ? payload : null;
+  } catch {
+    return null;
+  }
+}
+
 export function verifyInstructorCode(input) {
   const expected = Buffer.from(getInstructorCode());
   const submitted = Buffer.from(String(input || ''));
@@ -115,7 +186,10 @@ export async function optionalAuth(req, _res, next) {
   try {
     const payload = jwt.verify(token, getSecret());
     const user = await User.findById(payload.sub);
-    if (user) req.user = user;
+
+    if (user && (payload.ver || 0) === (user.tokenVersion || 0)) {
+      req.user = user;
+    }
   } catch {
     // Expired or invalid tokens are treated as logged out.
   }
