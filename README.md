@@ -57,6 +57,7 @@ Add your deployed URLs here after following the deployment guide:
 ### Instructor experience
 
 - Instructor-only Studio
+- Private Studio access code after login
 - Create draft courses
 - Add lessons with multi-paragraph content
 - Delete lessons
@@ -195,8 +196,11 @@ Then fill in:
 ```env
 MONGODB_URI=mongodb+srv://USERNAME:PASSWORD@cluster0.xxxxx.mongodb.net/learnloop?retryWrites=true&w=majority
 JWT_SECRET=replace-with-a-long-random-secret
+INSTRUCTOR_ACCESS_CODE=replace-with-a-private-studio-code
 PORT=3000
 ```
+
+`INSTRUCTOR_ACCESS_CODE` is a second, private code required after an instructor logs in. It is separate from the instructor account password.
 
 Generate a secret:
 
@@ -250,9 +254,12 @@ password: Student123!
 Instructor
 email:    instructor@learnloop.dev
 password: Teach123!
+Studio access code: TeachStudio2026!
 ```
 
 The login page includes one-click demo buttons.
+
+The instructor demo does not go straight into the Studio. After login, it asks for `INSTRUCTOR_ACCESS_CODE`. The development fallback is `TeachStudio2026!`; set a private value in `.env` and in Vercel.
 
 > Change or remove these accounts before using the project publicly.
 
@@ -311,10 +318,13 @@ Catalog query parameters:
 
 ### Instructor
 
-All instructor routes require an instructor account.
+All instructor routes require an instructor account **and** an unlocked Studio session.
 
 | Method | Route | Description |
 |---|---|---|
+| `GET` | `/api/instructor/access` | Check whether the Studio is unlocked |
+| `POST` | `/api/instructor/access` | Verify the private access code |
+| `POST` | `/api/instructor/lock` | Clear the Studio access cookie |
 | `GET` | `/api/instructor/courses` | List owned courses and student counts |
 | `POST` | `/api/instructor/courses` | Create a draft course |
 | `PATCH` | `/api/instructor/courses/:id` | Publish or unpublish |
@@ -403,6 +413,7 @@ git push -u origin main
 ```text
 MONGODB_URI=your Atlas connection string
 JWT_SECRET=your long random secret
+INSTRUCTOR_ACCESS_CODE=your private Studio code
 ```
 
 6. Deploy.
@@ -522,6 +533,7 @@ Because the browser sees `/api` on the frontend domain:
 |---|---|---|
 | `MONGODB_URI` | Yes | MongoDB Atlas connection string |
 | `JWT_SECRET` | Yes in production | Secret used to sign auth tokens |
+| `INSTRUCTOR_ACCESS_CODE` | Yes in production | Private code required to unlock the Studio |
 | `PORT` | No | Local server port, defaults to `3000` |
 
 Vercel sets `NODE_ENV=production` and `VERCEL=1` automatically.
@@ -541,12 +553,14 @@ This is a learning project, but it already includes several production-minded ch
 - Helmet security headers
 - Central error handler
 - Server-side role guards
+- Extra instructor Studio access code with a separate 8-hour httpOnly cookie
 - Escaped API data before rendering
 - No secrets committed to Git
 
 Before using this publicly:
 
 - Change the demo passwords or remove the demo accounts
+- Set a strong, unique `INSTRUCTOR_ACCESS_CODE`
 - Use a strong, unique `JWT_SECRET`
 - Review Atlas network access
 - Add a distributed rate limiter for multi-instance deployments
@@ -593,6 +607,17 @@ Update `frontend/vercel.json`, commit, and redeploy the frontend.
 ### `JWT_SECRET is not configured`
 
 Add `JWT_SECRET` to the backend Vercel project and redeploy.
+
+### `INSTRUCTOR_ACCESS_CODE is not configured`
+
+Add `INSTRUCTOR_ACCESS_CODE` to `backend/.env` locally and to the backend Vercel project, then restart/redeploy.
+
+### The Studio keeps asking for the access code
+
+- Check the code against `INSTRUCTOR_ACCESS_CODE`.
+- Studio access expires after 8 hours.
+- Logging out clears it.
+- Wrong codes are limited to 10 attempts per 15 minutes.
 
 ### `EADDRINUSE` locally
 

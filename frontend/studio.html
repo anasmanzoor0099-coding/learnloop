@@ -91,6 +91,42 @@
             <div class="studio-loading-card"></div>
           </div>
 
+          <div class="studio-gate" data-studio-gate hidden>
+            <div class="studio-gate-card">
+              <span class="studio-gate-mark" aria-hidden="true">↻</span>
+              <p class="eyebrow">Private instructor area</p>
+              <h2>Enter your Studio code.</h2>
+              <p class="studio-gate-copy">
+                Your account is signed in as an instructor. This extra code keeps
+                the course builder private, even if someone else uses your account.
+              </p>
+
+              <form class="studio-form" data-studio-access-form novalidate>
+                <div class="studio-field">
+                  <label for="studio-access-code">Instructor access code</label>
+                  <input
+                    id="studio-access-code"
+                    name="code"
+                    type="password"
+                    autocomplete="off"
+                    placeholder="Enter the private code"
+                    required
+                  />
+                </div>
+
+                <div class="studio-form-error" data-access-error hidden></div>
+                <button class="button button-primary button-full" type="submit">
+                  Unlock Studio
+                </button>
+              </form>
+
+              <p class="studio-gate-note">
+                Access lasts 8 hours on this device. You can close the tab and return
+                without entering the code again during that time.
+              </p>
+            </div>
+          </div>
+
           <div class="studio-denied" data-studio-denied hidden>
             <span class="studio-denied-mark">↻</span>
             <p class="eyebrow">Instructor access required</p>

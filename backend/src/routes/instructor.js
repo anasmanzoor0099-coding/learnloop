@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import rateLimit from 'express-rate-limit';
 import { z } from 'zod';
 import Course, { ACCENTS, CATEGORIES, LEVELS } from '../models/Course.js';
 import Enrollment from '../models/Enrollment.js';
@@ -6,10 +7,32 @@ import { connectDB } from '../db.js';
 import { asyncHandler, ApiError } from '../lib/api-error.js';
 import { serializeCourse } from '../lib/serialize.js';
 import { uniqueSlug } from '../lib/slugify.js';
-import { requireRole } from '../middleware/auth.js';
+import {
+  clearInstructorAccessCookie,
+  optionalInstructorAccess,
+  requireInstructorAccess,
+  requireRole,
+  setInstructorAccessCookie,
+  signInstructorAccess,
+  verifyInstructorCode
+} from '../middleware/auth.js';
 import { validateBody } from '../middleware/validate.js';
 
 const router = Router();
+
+const accessSchema = z.object({
+  code: z.string().trim().min(1, 'Enter the instructor access code.').max(200)
+});
+
+const unlockLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    error: 'Too many access attempts. Please try again in a few minutes.'
+  }
+});
 
 const courseFields = {
   title: z.string().trim().min(4).max(120),
@@ -46,6 +69,31 @@ const lessonSchema = z.object({
 });
 
 router.use(requireRole('instructor'));
+
+router.get('/access', optionalInstructorAccess, (req, res) => {
+  res.json({ unlocked: Boolean(req.instructorAccess) });
+});
+
+router.post(
+  '/access',
+  unlockLimiter,
+  validateBody(accessSchema),
+  (req, res) => {
+    if (!verifyInstructorCode(req.body.code)) {
+      throw new ApiError(403, 'That instructor access code is incorrect.');
+    }
+
+    setInstructorAccessCookie(res, signInstructorAccess(req.user));
+    res.json({ ok: true, unlocked: true });
+  }
+);
+
+router.post('/lock', (_req, res) => {
+  clearInstructorAccessCookie(res);
+  res.json({ ok: true, unlocked: false });
+});
+
+router.use(requireInstructorAccess);
 
 router.get(
   '/courses',

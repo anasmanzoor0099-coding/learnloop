@@ -7,6 +7,7 @@ import { asyncHandler, ApiError } from '../lib/api-error.js';
 import { validateBody } from '../middleware/validate.js';
 import {
   clearAuthCookie,
+  clearInstructorAccessCookie,
   setAuthCookie,
   signToken
 } from '../middleware/auth.js';
@@ -50,6 +51,7 @@ router.post(
       headline: 'Learning something new'
     });
 
+    clearInstructorAccessCookie(res);
     setAuthCookie(res, signToken(user));
     res.status(201).json({ user: user.toSafeJSON() });
   })
@@ -71,6 +73,7 @@ router.post(
       throw new ApiError(401, 'Email or password is incorrect.');
     }
 
+    clearInstructorAccessCookie(res);
     setAuthCookie(res, signToken(user));
     res.json({ user: user.toSafeJSON() });
   })
@@ -78,6 +81,7 @@ router.post(
 
 router.post('/logout', (_req, res) => {
   clearAuthCookie(res);
+  clearInstructorAccessCookie(res);
   res.json({ ok: true });
 });
 

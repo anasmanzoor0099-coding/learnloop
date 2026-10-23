@@ -41,6 +41,12 @@ test('instructor routes reject guests before touching MongoDB', async () => {
   assert.match(response.body.error, /log in/i);
 });
 
+test('instructor access check rejects guests', async () => {
+  const response = await request(app).get('/api/instructor/access').expect(401);
+
+  assert.match(response.body.error, /log in/i);
+});
+
 test('unknown API routes return JSON 404', async () => {
   const response = await request(app).get('/api/does-not-exist').expect(404);
 

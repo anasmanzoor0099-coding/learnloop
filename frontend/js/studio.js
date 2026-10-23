@@ -10,6 +10,9 @@ const loading = document.querySelector('[data-studio-loading]');
 const denied = document.querySelector('[data-studio-denied]');
 const content = document.querySelector('[data-studio-content]');
 const errorPanel = document.querySelector('[data-studio-error]');
+const gate = document.querySelector('[data-studio-gate]');
+const accessForm = document.querySelector('[data-studio-access-form]');
+const accessError = document.querySelector('[data-access-error]');
 
 const courseStats = {
   courses: document.querySelector('[data-studio-stat-courses]'),
@@ -56,10 +59,22 @@ function setError(element, message) {
   element.hidden = !message;
 }
 
+function showGate(message = '') {
+  if (loading) loading.hidden = true;
+  if (content) content.hidden = true;
+  if (denied) denied.hidden = true;
+  if (errorPanel) errorPanel.hidden = true;
+  if (gate) gate.hidden = false;
+
+  setError(accessError, message);
+  document.querySelector('#studio-access-code')?.focus();
+}
+
 function showDenied() {
   if (loading) loading.hidden = true;
   if (content) content.hidden = true;
   if (errorPanel) errorPanel.hidden = true;
+  if (gate) gate.hidden = true;
   if (denied) denied.hidden = false;
 }
 
@@ -67,6 +82,7 @@ function showStudioError(message) {
   if (loading) loading.hidden = true;
   if (content) content.hidden = true;
   if (denied) denied.hidden = true;
+  if (gate) gate.hidden = true;
 
   if (errorPanel) {
     errorPanel.hidden = false;
@@ -87,6 +103,7 @@ function showContent() {
   if (loading) loading.hidden = true;
   if (denied) denied.hidden = true;
   if (errorPanel) errorPanel.hidden = true;
+  if (gate) gate.hidden = true;
   if (content) content.hidden = false;
 }
 
@@ -294,7 +311,7 @@ async function loadCourses(options = {}) {
     if (error.status === 401) {
       redirectToLogin();
     } else if (error.status === 403) {
-      showDenied();
+      showGate('Your instructor access expired. Enter the code again.');
     } else {
       showStudioError(
         error.status === 503
@@ -485,6 +502,50 @@ newCourseButtons.forEach((button) => {
   button.addEventListener('click', showCreatePanel);
 });
 
+accessForm?.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  setError(accessError, '');
+
+  const input = accessForm.querySelector('input[name="code"]');
+  const code = String(new FormData(accessForm).get('code') || '').trim();
+
+  if (!code) {
+    setError(accessError, 'Enter the instructor access code.');
+    input?.focus();
+    return;
+  }
+
+  const submitButton = accessForm.querySelector('button[type="submit"]');
+  setButtonLoading(submitButton, true, 'Checking access…');
+
+  try {
+    await api('/api/instructor/access', {
+      method: 'POST',
+      body: { code }
+    });
+
+    setButtonLoading(submitButton, false);
+    if (gate) gate.hidden = true;
+    await loadCourses();
+    showToast('Studio unlocked for this session.');
+  } catch (error) {
+    setButtonLoading(submitButton, false);
+
+    if (error.status === 401) {
+      redirectToLogin();
+      return;
+    }
+
+    setError(
+      accessError,
+      error.status === 429
+        ? 'Too many attempts. Wait a few minutes and try again.'
+        : error.message || 'Could not unlock the Studio.'
+    );
+    input?.select();
+  }
+});
+
 async function init() {
   user = await getCurrentUser();
 
@@ -499,7 +560,29 @@ async function init() {
   }
 
   document.title = `Instructor Studio — ${user.name} — LearnLoop`;
-  await loadCourses();
+
+  try {
+    const access = await api('/api/instructor/access');
+
+    if (!access.unlocked) {
+      showGate();
+      return;
+    }
+
+    await loadCourses();
+  } catch (error) {
+    if (error.status === 401) {
+      redirectToLogin();
+    } else if (error.status === 403) {
+      showDenied();
+    } else {
+      showStudioError(
+        error.status === 503
+          ? 'The database is not connected yet. Add MONGODB_URI to backend/.env and run npm run seed.'
+          : error.message || 'Please refresh the page and try again.'
+      );
+    }
+  }
 }
 
 init();
