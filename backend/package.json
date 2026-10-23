@@ -11,6 +11,7 @@
     "dev": "node --watch server.js",
     "start": "node server.js",
     "seed": "node src/seed.js",
+    "update-instructor": "node src/update-instructor.js",
     "test": "node test/run.js"
   },
   "dependencies": {

@@ -226,6 +226,12 @@ This creates:
 
 > The seed script rebuilds courses and enrollments. It will remove existing courses and enrollment progress. Do not run it repeatedly on a production database with real users.
 
+If your database is already seeded and you only need the instructor profile updated to **Anas Manzoor**, run:
+
+```powershell
+npm run update-instructor
+```
+
 ### 5. Start the development server
 
 ```powershell
@@ -252,6 +258,7 @@ email:    student@learnloop.dev
 password: Student123!
 
 Instructor
+name:     Anas Manzoor
 email:    instructor@learnloop.dev
 password: Teach123!
 Studio access code: TeachStudio2026!
@@ -274,6 +281,7 @@ Run from `backend/`:
 | `npm run dev` | Start Express with `node --watch` |
 | `npm start` | Start Express normally |
 | `npm run seed` | Seed MongoDB with demo data |
+| `npm run update-instructor` | Rename the existing instructor profile without resetting data |
 | `npm test` | Run the backend test suite |
 
 ---

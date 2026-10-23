@@ -51,8 +51,8 @@ function fakeCourse() {
     createdAt: new Date('2026-01-01T00:00:00.000Z'),
     instructor: {
       _id: instructorId,
-      name: 'Sara Malik',
-      headline: 'Instructor'
+      name: 'Anas Manzoor',
+      headline: 'Software Engineering Student'
     },
     lessons
   };
@@ -95,7 +95,7 @@ test('serializeCourse hides lesson content unless requested', () => {
   assert.equal(summary.totalMinutes, 50);
   assert.equal(summary.lessons.length, 3);
   assert.equal('content' in summary.lessons[0], false);
-  assert.equal(summary.instructor.name, 'Sara Malik');
+  assert.equal(summary.instructor.name, 'Anas Manzoor');
 });
 
 test('serializeCourse includes content and progress when requested', () => {

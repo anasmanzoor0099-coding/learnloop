@@ -30,12 +30,12 @@ async function run() {
   await Enrollment.deleteMany({});
   await Course.deleteMany({});
 
-  const sara = await upsertUser({
-    name: 'Sara Malik',
+  const anas = await upsertUser({
+    name: 'Anas Manzoor',
     email: 'instructor@learnloop.dev',
     password: DEMO_PASSWORD.instructor,
     role: 'instructor',
-    headline: 'Senior frontend engineer & educator'
+    headline: 'Software Engineering Student'
   });
 
   const ayesha = await upsertUser({
@@ -49,7 +49,7 @@ async function run() {
   const courses = await Course.insertMany(
     seedCourses.map((course) => ({
       ...course,
-      instructor: sara._id,
+      instructor: anas._id,
       published: true
     }))
   );
